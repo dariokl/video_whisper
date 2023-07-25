@@ -3,5 +3,6 @@ dist
 build
 out
 python/env
+python/main.spec
 *.log*
 *.exe
