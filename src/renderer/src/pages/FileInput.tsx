@@ -1,8 +1,12 @@
-import { useState, useRef, useEffect, ChangeEvent } from 'react'
+import { useRef, useEffect, ChangeEvent } from 'react'
+import Button from '../components/base/Button'
 import { HiOutlineFolderArrowDown } from 'react-icons/hi2'
+import { IoIosArrowForward } from 'react-icons/io'
 import { BsFiletypeMp4 } from 'react-icons/bs'
+import { useStepContext } from '@renderer/contexts/stepContext'
 const FileInput = (): JSX.Element => {
-  const [files, setFiles] = useState<File[]>([])
+  const { setStep, files, setFiles } = useStepContext()
+
   const drop = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -48,8 +52,14 @@ const FileInput = (): JSX.Element => {
     }
   }
 
+  const handleContinue = (): void => {
+    if (files.length) {
+      setStep(1)
+    }
+  }
+
   return (
-    <div className="bg-soft-gray shadow-lg w-6/12 h-96 flex-col rounded-lg">
+    <div className="p-2 bg-soft-gray shadow-lg w-6/12 h-fit flex-col rounded-lg">
       <div className="w-full flex justify-center">
         <div className="mt-8 flex items-center justify-center text-green-900" ref={drop}>
           <label className="flex flex-col items-center border-[1px] border-dotted border-green-900 bg-green-900/10 hover:bg-green-900/40  justify-center w-96 2xl:w-[680px] h-62 rounded-lg cursor-pointer transition duration-150">
@@ -74,6 +84,9 @@ const FileInput = (): JSX.Element => {
             {file.name}
           </div>
         ))}
+      </div>
+      <div className="flex justify-end pr-4">
+        <Button onClick={handleContinue} icon={<IoIosArrowForward />} />
       </div>
     </div>
   )

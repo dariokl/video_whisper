@@ -4,7 +4,7 @@ import path from 'path'
 import { promisify } from 'util'
 
 export const ipcHandlers = (): void => {
-  ipcMain.handle('create', async (_, args) => {
+  ipcMain.handle('loadFile', async (_, args) => {
     // const distPath = 'resources/python/main.exe'
     const exec = promisify(execFile)
     // process.cwd()

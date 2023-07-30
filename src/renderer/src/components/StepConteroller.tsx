@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
-import FileInput from './FileInput'
+import FileInput from '../pages/FileInput'
+import Editor from '../pages/Editor'
 import { useStepContext } from '@renderer/contexts/stepContext'
 
 const StepConteroller = (): JSX.Element | null => {
@@ -9,6 +10,8 @@ const StepConteroller = (): JSX.Element | null => {
     switch (step) {
       case 0:
         return <FileInput />
+      case 1:
+        return <Editor />
       default:
         return null
     }

@@ -3,17 +3,26 @@ import { createContext, useContext, useState } from 'react'
 interface IProps {
   children: React.ReactNode
 }
-const StepContext = createContext({})
+
+interface IContext {
+  step: number
+  setStep: React.Dispatch<React.SetStateAction<number>>
+  files: File[]
+  setFiles: React.Dispatch<React.SetStateAction<File[]>>
+}
+const StepContext = createContext({} as IContext)
 
 const StepContextProvider: React.FC<IProps> = ({ children }): JSX.Element => {
   const [step, setStep] = useState<number>(0)
-  const [file, setFile] = useState<File | null>(null)
+  const [files, setFiles] = useState<File[]>([])
 
   return (
-    <StepContext.Provider value={{ step, setStep, file, setFile }}>{children}</StepContext.Provider>
+    <StepContext.Provider value={{ step, setStep, files, setFiles }}>
+      {children}
+    </StepContext.Provider>
   )
 }
 
-export const useStepContext = (): {} => useContext(StepContext)
+export const useStepContext = (): IContext => useContext(StepContext)
 
 export default StepContextProvider
