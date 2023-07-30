@@ -1,14 +1,11 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
 
 body {
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
   font-family: Roboto, -apple-system, BlinkMacSystemFont, 'Helvetica Neue', 'Segoe UI', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Open Sans', sans-serif;
-  color: #d37556    ;
-  background-color: #e1dad2;
+  'Ubuntu', 'Cantarell', 'Open Sans', sans-serif;
 }
 
 * {
@@ -16,4 +13,7 @@ body {
   margin: 0;
 }
 
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
