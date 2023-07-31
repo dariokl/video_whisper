@@ -1,24 +1,28 @@
-// import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
-// export const useIpc = async (functionName, args) => {
-//   const [loading, setLoading] = useState<boolean>(false)
-//   const [response, setResponse] = useState<Record<any, any>>({})
-//   const [error, setError] = useState<Error | null>(null)
+export const useIpc = (functionName, args): Record<string, boolean | any | Error> => {
+  const [loading, setLoading] = useState<boolean>(true)
+  const [response, setResponse] = useState<Record<any, any>>({})
+  const [error, setError] = useState<Error | null>(null)
 
-//   try {
-//     setLoading(true)
+  useEffect(() => {
+    const result = async (): Promise<void> => {
+      try {
+        // @ts-ignore
+        const response = await window.api[functionName](args)
+        setResponse(response)
+      } catch (error) {
+        setError(error as Error)
+      } finally {
+        setLoading(false)
+      }
+    }
+    result()
+  }, [])
 
-//     const response = await window.api[functionName](args)
+  console.log(loading)
 
-//     console.log('here')
-//     setResponse(response)
-//   } catch (error) {
-//     setError(error as Error)
-//   } finally {
-//     setLoading(false)
-//   }
+  return { loading, response, error }
+}
 
-//   return { loading, response, error }
-// }
-
-// export default useIpc
+export default useIpc
