@@ -1,9 +1,10 @@
-import { useRef, useEffect, ChangeEvent } from 'react'
-import Button from '../components/base/Button'
+import { useStepContext } from '@renderer/contexts/stepContext'
+import { ChangeEvent, useEffect, useRef } from 'react'
+import { BsFiletypeMp4 } from 'react-icons/bs'
 import { HiOutlineFolderArrowDown } from 'react-icons/hi2'
 import { IoIosArrowForward } from 'react-icons/io'
-import { BsFiletypeMp4 } from 'react-icons/bs'
-import { useStepContext } from '@renderer/contexts/stepContext'
+import Button from '../components/base/Button'
+
 const FileInput = (): JSX.Element => {
   const { setStep, files, setFiles } = useStepContext()
 

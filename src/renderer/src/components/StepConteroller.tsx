@@ -1,7 +1,6 @@
-import React, { useState } from 'react'
-import FileInput from '../pages/FileInput'
-import Editor from '../pages/Editor'
 import { useStepContext } from '@renderer/contexts/stepContext'
+import Editor from '../pages/Editor'
+import FileInput from '../pages/FileInput'
 
 const StepConteroller = (): JSX.Element | null => {
   const { step } = useStepContext()
