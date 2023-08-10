@@ -10,6 +10,18 @@ const VideoPlayer = ({ path, loading, segments }): JSX.Element => {
     }
   }
 
+  const formatTime = (seconds: number): string => {
+    const hours = Math.floor(seconds / 3600)
+    const minutes = Math.floor((seconds % 3600) / 60)
+    const remainingSeconds = Math.floor(seconds % 60)
+
+    const formattedHours = hours > 0 ? (hours < 10 ? '0' : '') + hours + ':' : ''
+    const formattedMinutes = (minutes < 10 ? '0' : '') + minutes
+    const formattedSeconds = (remainingSeconds < 10 ? '0' : '') + remainingSeconds
+
+    return formattedHours + formattedMinutes + ':' + formattedSeconds
+  }
+
   return (
     <div className="flex-col">
       <ReactPlayer
@@ -25,13 +37,17 @@ const VideoPlayer = ({ path, loading, segments }): JSX.Element => {
         ) : (
           segments.map(({ text, start, end }) => {
             return (
-              <div
-                key={start}
-                className="flex-col p-[2px]"
-                onClick={(): void => handleSegmentClick(start, end)}
-              >
-                <div className="flex p-2 bg-green-900/10 h-10 rounded-lg text-green-900 items-center">
-                  <p className="p-4 text-bold">{text}</p>
+              <div key={start} className="flex-col p-[4px]">
+                <div className="flex justify-center items-center shadow-md">
+                  <div
+                    onClick={(): void => handleSegmentClick(start, end)}
+                    className="w-fit h-10 bg-green-900/10  flex justify-center items-center p-4 text-green-900 hover:text-blue-400 font-bold transition duration-150 hover:cursor-pointer"
+                  >
+                    <p>{formatTime(start)}</p>
+                  </div>
+                  <div className="flex-1 p-2 bg-green-900/10 justify-center text-green-900/90">
+                    <p className="text-bold">{text}</p>
+                  </div>
                 </div>
               </div>
             )
