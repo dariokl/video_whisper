@@ -8,7 +8,7 @@ export const useIpc = (functionName, args): Record<string, boolean | any | Error
   useEffect(() => {
     const result = async (): Promise<void> => {
       try {
-        // @ts-ignore
+        // @ts-ignore - window is undefined
         const response = await window.api[functionName](args)
         setResponse(response)
       } catch (error) {
@@ -19,8 +19,6 @@ export const useIpc = (functionName, args): Record<string, boolean | any | Error
     }
     result()
   }, [])
-
-  console.log(loading)
 
   return { loading, response, error }
 }

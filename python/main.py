@@ -1,6 +1,7 @@
 import typer
 import whisper
 import json
+from moviepy.video.io.ffmpeg_tools import ffmpeg_extract_subclip
 
 app = typer.Typer()
 
@@ -13,7 +14,9 @@ def transcribe_audio(file_path):
     print(json.dumps(result))
 
 @app.command()
-def convert_video():
+def create_video(file_path):
+
+    ffmpeg_extract_subclip(file_path, 5, 10, targetname="test.mp4")
 
     print('here')
 

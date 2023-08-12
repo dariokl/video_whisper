@@ -1,8 +1,12 @@
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
 import ReactPlayer from 'react-player'
+import { formatTime } from '@renderer/utils/format-time.util'
+import { IoIosCheckbox, IoIosCheckboxOutline } from 'react-icons/io'
 
 const VideoPlayer = ({ path, loading, segments }): JSX.Element => {
   const ref = useRef(null)
+
+  const [selectedSegments, setSelectedSegments] = useState<Record<any, any>[]>([])
 
   const handleSegmentClick = (start, end): void => {
     if (ref.current) {
@@ -10,34 +14,29 @@ const VideoPlayer = ({ path, loading, segments }): JSX.Element => {
     }
   }
 
-  const formatTime = (seconds: number): string => {
-    const hours = Math.floor(seconds / 3600)
-    const minutes = Math.floor((seconds % 3600) / 60)
-    const remainingSeconds = Math.floor(seconds % 60)
+  const isSelectedSegment = (selectedId: number): Record<string, number | string> | undefined =>
+    selectedSegments.find(({ id }) => id === selectedId)
 
-    const formattedHours = hours > 0 ? (hours < 10 ? '0' : '') + hours + ':' : ''
-    const formattedMinutes = (minutes < 10 ? '0' : '') + minutes
-    const formattedSeconds = (remainingSeconds < 10 ? '0' : '') + remainingSeconds
+  const onAddSegment = (segment: Record<string, number | string>): void => {
+    setSelectedSegments((prev) => [...prev, segment])
+  }
 
-    return formattedHours + formattedMinutes + ':' + formattedSeconds
+  const onRemoveSegment = (selectedId: number): void => {
+    const filteredSegments = selectedSegments.filter(({ id }) => id !== selectedId)
+
+    setSelectedSegments(filteredSegments)
   }
 
   return (
     <div className="flex-col">
-      <ReactPlayer
-        ref={ref}
-        url={`file-protocol://${path}`}
-        width="100%"
-        height="100%"
-        controls={true}
-      />
-      <div className="flex-col h-96 overflow-scroll">
+      <ReactPlayer ref={ref} url={`file-protocol://${path}`} controls />
+      <div className="mt-8 flex-col h-96 overflow-y-scroll">
         {loading ? (
           <div> Loading... </div>
         ) : (
-          segments.map(({ text, start, end }) => {
+          segments.map(({ id, text, start, end }) => {
             return (
-              <div key={start} className="flex-col p-[4px]">
+              <div key={id} className="flex-col p-[4px]">
                 <div className="flex justify-center items-center shadow-md">
                   <div
                     onClick={(): void => handleSegmentClick(start, end)}
@@ -46,7 +45,17 @@ const VideoPlayer = ({ path, loading, segments }): JSX.Element => {
                     <p>{formatTime(start)}</p>
                   </div>
                   <div className="flex-1 p-2 bg-green-900/10 justify-center text-green-900/90">
-                    <p className="text-bold">{text}</p>
+                    <div className="flex justify-between items-center">
+                      <p className="text-bold">{text}</p>
+                      {isSelectedSegment(id) ? (
+                        <IoIosCheckbox size={22} onClick={(): void => onRemoveSegment(id)} />
+                      ) : (
+                        <IoIosCheckboxOutline
+                          size={22}
+                          onClick={(): void => onAddSegment({ id, text, start, end })}
+                        />
+                      )}
+                    </div>
                   </div>
                 </div>
               </div>

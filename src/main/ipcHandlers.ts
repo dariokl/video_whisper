@@ -1,5 +1,5 @@
-import { ipcMain } from 'electron'
 import { execFile } from 'child_process'
+import { ipcMain } from 'electron'
 import path from 'path'
 import { promisify } from 'util'
 
