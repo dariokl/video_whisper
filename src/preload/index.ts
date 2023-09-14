@@ -3,7 +3,8 @@ import { electronAPI } from '@electron-toolkit/preload'
 
 // Custom APIs for renderer
 const api = {
-  loadFile: (file: File): Promise<any> => ipcRenderer.invoke('loadFile', file)
+  loadFile: (file: File): Promise<any> => ipcRenderer.invoke('loadFile', file),
+  generateVideo: (path): Promise<any> => ipcRenderer.invoke('generateVideo', path)
 }
 
 // Use `contextBridge` APIs to expose Electron APIs to

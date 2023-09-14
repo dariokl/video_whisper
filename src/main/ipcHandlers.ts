@@ -14,4 +14,17 @@ export const ipcHandlers = (): void => {
 
     return JSON.parse(stdout)
   })
+
+  ipcMain.handle('generateVideo', async (_, args) => {
+    // const distPath = 'resources/python/main.exe'
+    const exec = promisify(execFile)
+    // process.cwd()
+    const exePath = path.join(__dirname, '../../python/dist/main/main.exe')
+
+    const { stdout } = await exec(exePath, ['create-video', args])
+
+    console.log(stdout)
+
+    return 'done'
+  })
 }
