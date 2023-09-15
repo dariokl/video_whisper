@@ -2,6 +2,7 @@ import { useRef, useState } from 'react'
 import ReactPlayer from 'react-player'
 import { formatTime } from '@renderer/utils/format-time.util'
 import { IoIosCheckbox, IoIosCheckboxOutline } from 'react-icons/io'
+import Button from '../base/Button'
 
 const VideoPlayer = ({ path, loading, segments }): JSX.Element => {
   const ref = useRef(null)
@@ -25,6 +26,12 @@ const VideoPlayer = ({ path, loading, segments }): JSX.Element => {
     const filteredSegments = selectedSegments.filter(({ id }) => id !== selectedId)
 
     setSelectedSegments(filteredSegments)
+  }
+
+  // Consider creating lazy UseIpc hook.
+  const generateVideo = async (): Promise<void> => {
+    // @ts-ignore - window is undefined
+    await window.api.generateVideo(path, selectedSegments)
   }
 
   return (
@@ -62,6 +69,9 @@ const VideoPlayer = ({ path, loading, segments }): JSX.Element => {
             )
           })
         )}
+      </div>
+      <div className="flex justify-end mt-2">
+        <Button onClick={generateVideo} label="Create" />
       </div>
     </div>
   )

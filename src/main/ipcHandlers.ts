@@ -21,7 +21,11 @@ export const ipcHandlers = (): void => {
     // process.cwd()
     const exePath = path.join(__dirname, '../../python/dist/main/main.exe')
 
-    const { stdout } = await exec(exePath, ['create-video', args])
+    const { stdout } = await exec(exePath, [
+      'create-video',
+      args.path,
+      JSON.stringify(args.segments)
+    ])
 
     console.log(stdout)
 

@@ -4,6 +4,8 @@ import whisper
 import ast
 import subprocess
 import json
+from moviepy.editor import VideoFileClip, TextClip, concatenate_videoclips, CompositeVideoClip
+from moviepy.video.io.ffmpeg_tools import ffmpeg_extract_subclip
 
 app = typer.Typer()
 
@@ -19,40 +21,37 @@ def transcribe_audio(file_path):
 
 @app.command()
 def create_video(file_path, segments=typer.Argument(..., callback=ast.literal_eval)):
-    """Create a video with subtitles based on segments."""
-    filter_complex = []
+    # Load the video
+    video = VideoFileClip(file_path)
+    
+    # Initialize a list to hold video segments with subtitles
+    clips_with_subtitles = []
 
     for idx, segment in enumerate(segments):
         start_time = segment['start']
         end_time = segment['end']
         subtitle_text = segment['text']
 
-        subclip_filter = f"[0:v]trim=start={start_time}:end={end_time},setpts=PTS-STARTPTS[v{idx}]"
-        filter_complex.append(subclip_filter)
+        # Extract the subclip based on start and end times
+        subclip = video.subclip(start_time, end_time)
 
-        drawtext_filter = (
-            f"[v{idx}]drawtext=fontfile={FONT_FILE_PATH}:text={subtitle_text}:"
-            f"fontcolor=white:fontsize=24:box=1:boxcolor=black@0.5:boxborderw=5:x=10:y=10[v{idx}_subtitled]"
-        )
-        filter_complex.append(drawtext_filter)
+        text = TextClip(subtitle_text, font='Arial', fontsize=24, color='white')
+        text = text.set_pos('center').set_duration(end_time - start_time)
 
-    filter_complex = ";".join(filter_complex)
+        compose = CompositeVideoClip([subclip, text])
+        clips_with_subtitles.append(compose)
 
+    # Concatenate all clips with subtitles
+    final_video = concatenate_videoclips(clips_with_subtitles)
+
+    # Define the output file path
     output_path = os.path.join(OUTPUT_DIR, OUTPUT_VIDEO_FILENAME)
 
-    ffmpeg_command = [
-        "ffmpeg",
-        "-i", file_path,
-        "-filter_complex", filter_complex,
-        "-map", f"[v{len(segments) - 1}_subtitled]",
-        "-c:v", "libx264",
-        "-c:a", "aac",
-        "-strict", "experimental",
-        output_path
-    ]
+    # Write the final video to the output file
+    final_video.write_videofile(output_path, codec='libx264', audio_codec='aac')
 
-    subprocess.run(ffmpeg_command)
     print("Video created:", output_path)
+
 
 if __name__ == "__main__":
     app()
