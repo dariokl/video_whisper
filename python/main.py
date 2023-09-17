@@ -6,6 +6,7 @@ import subprocess
 import json
 from moviepy.editor import VideoFileClip, TextClip, concatenate_videoclips, CompositeVideoClip
 from moviepy.video.io.ffmpeg_tools import ffmpeg_extract_subclip
+from faster_whisper import WhisperModel
 
 app = typer.Typer()
 
@@ -14,7 +15,17 @@ OUTPUT_DIR = os.path.expanduser("~")
 OUTPUT_VIDEO_FILENAME = "output_video_with_subtitles.mp4"
 
 @app.command()
+def faster_transcribe(file_path):
+    model = WhisperModel('tiny', device='cpu', compute_type='float32')
+    segments, info = model.transcribe(file_path, beam_size=5)
+
+    print(list(segments))
+
+
+@app.command()
 def transcribe_audio(file_path):
+    video = VideoFileClip(file_path)
+    audio = video.audio
     model = whisper.load_model("base")
     result = model.transcribe(file_path, fp16=False)
     print(json.dumps(result))
