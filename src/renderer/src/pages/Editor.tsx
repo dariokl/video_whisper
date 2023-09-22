@@ -11,7 +11,7 @@ const Editor = (): JSX.Element => {
 
   return (
     <div className="flex-col">
-      <VideoPlayer path={files[0].path} loading={loading} segments={response.segments} />
+      <VideoPlayer path={files[0].path} loading={loading} segments={response} />
     </div>
   )
 }

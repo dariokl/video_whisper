@@ -7,8 +7,11 @@ import { ipcHandlers } from './ipcHandlers'
 function createWindow(): void {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
-    width: 900,
-    height: 670,
+    height: 1080,
+    width: 800,
+    minHeight: 1080,
+    minWidth: 800,
+    maxWidth: 1440,
     show: false,
     autoHideMenuBar: true,
     ...(process.platform === 'linux' ? { icon } : {}),

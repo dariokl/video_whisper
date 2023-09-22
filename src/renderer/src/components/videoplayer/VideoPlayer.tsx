@@ -9,7 +9,7 @@ const VideoPlayer = ({ path, loading, segments }): JSX.Element => {
 
   const [selectedSegments, setSelectedSegments] = useState<Record<any, any>[]>([])
 
-  const handleSegmentClick = (start, end): void => {
+  const handleSegmentClick = (start: number): void => {
     if (ref.current) {
       ;(ref.current as ReactPlayer).seekTo(start, 'seconds')
     }
@@ -36,26 +36,42 @@ const VideoPlayer = ({ path, loading, segments }): JSX.Element => {
 
   return (
     <div className="flex-col">
-      <ReactPlayer ref={ref} url={`file-protocol://${path}`} controls />
-      <div className="mt-8 flex-col h-96 overflow-y-scroll">
+      <div className="w-[800px] h-[400px] bg-green-900/10 rounded-lg shadow-lg mt-8">
+        <div className="relative rounded-lg  ">
+          <ReactPlayer
+            ref={ref}
+            url={`file-protocol://${path}`}
+            controls
+            style={{
+              position: 'absolute',
+              top: '20px',
+              left: '80px',
+              borderRadius: '20px',
+              overflow: 'hidden'
+            }}
+            autoPlay
+          />
+        </div>
+      </div>
+      <div className="mt-8 flex-col h-[600px] overflow-y-scroll p-6 lg:p-0">
         {loading ? (
           <div> Loading... </div>
         ) : (
           segments.map(({ id, text, start, end }) => {
             return (
               <div key={id} className="flex-col p-[4px]">
-                <div className="flex justify-center items-center shadow-md">
+                <div className="flex justify-center items-center shadow-md bg-green-900/10">
                   <div
-                    onClick={(): void => handleSegmentClick(start, end)}
-                    className="w-fit h-10 bg-green-900/10  flex justify-center items-center p-4 text-green-900 hover:text-blue-400 font-bold transition duration-150 hover:cursor-pointer"
+                    onClick={(): void => handleSegmentClick(start)}
+                    className="w-fit h-10 flex justify-center items-center p-4 text-green-900 hover:text-blue-400 font-bold transition duration-150 hover:cursor-pointer"
                   >
                     <p>{formatTime(start)}</p>
                   </div>
-                  <div className="flex-1 p-2 bg-green-900/10 justify-center text-green-900/90">
+                  <div className="flex-1 p-2 justify-center text-green-900/90">
                     <div className="flex justify-between items-center">
                       <p className="text-bold">{text}</p>
                       {isSelectedSegment(id) ? (
-                        <IoIosCheckbox size={22} onClick={(): void => onRemoveSegment(id)} />
+                        <IoIosCheckbox size={24} onClick={(): void => onRemoveSegment(id)} />
                       ) : (
                         <IoIosCheckboxOutline
                           size={22}

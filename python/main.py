@@ -1,6 +1,5 @@
 import os
 import typer
-import whisper
 import ast
 import subprocess
 import json
@@ -14,20 +13,18 @@ FONT_FILE_PATH = "/Windows/Fonts/arial.ttf"
 OUTPUT_DIR = os.path.expanduser("~")
 OUTPUT_VIDEO_FILENAME = "output_video_with_subtitles.mp4"
 
-@app.command()
-def faster_transcribe(file_path):
-    model = WhisperModel('tiny', device='cpu', compute_type='float32')
-    segments, info = model.transcribe(file_path, beam_size=5)
-
-    print(list(segments))
-
 
 @app.command()
 def transcribe_audio(file_path):
-    video = VideoFileClip(file_path)
-    audio = video.audio
-    model = whisper.load_model("base")
-    result = model.transcribe(file_path, fp16=False)
+    # TODO: Check cuda packaging options.
+    model = WhisperModel('tiny', device='cpu', compute_type='float32')
+    segments, info = model.transcribe(file_path, beam_size=5)
+
+    result = []
+    for segement in segments: 
+        item = {"id": segement.id, "start": segement.start, "end": segement.end, "text": segement.text}
+        result.append(item)
+    
     print(json.dumps(result))
 
 @app.command()
