@@ -18,7 +18,7 @@ const StepContextProvider: React.FC<IProps> = ({ children }): JSX.Element => {
 
   return (
     <StepContext.Provider value={{ step, setStep, files, setFiles }}>
-      {children}
+      <div className="w-[920px] flex justify-center">{children}</div>
     </StepContext.Provider>
   )
 }

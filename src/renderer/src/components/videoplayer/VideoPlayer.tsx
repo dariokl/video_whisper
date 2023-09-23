@@ -35,24 +35,20 @@ const VideoPlayer = ({ path, loading, segments }): JSX.Element => {
   }
 
   return (
-    <div className="flex-col">
-      <div className="w-[800px] h-[400px] bg-green-900/10 rounded-lg shadow-lg mt-8">
-        <div className="relative rounded-lg  ">
-          <ReactPlayer
-            ref={ref}
-            url={`file-protocol://${path}`}
-            controls
-            style={{
-              position: 'absolute',
-              top: '20px',
-              left: '80px',
-              borderRadius: '20px',
-              overflow: 'hidden'
-            }}
-            autoPlay
-          />
-        </div>
+    <div className="flex-col pt-8">
+      <div className="rounded-lg flex justify-center">
+        <ReactPlayer
+          ref={ref}
+          url={`file-protocol://${path}`}
+          controls
+          style={{
+            borderRadius: '20px',
+            overflow: 'hidden'
+          }}
+          autoPlay
+        />
       </div>
+
       <div className="mt-8 flex-col h-[600px] overflow-y-scroll p-6 lg:p-0">
         {loading ? (
           <div> Loading... </div>
@@ -86,7 +82,7 @@ const VideoPlayer = ({ path, loading, segments }): JSX.Element => {
           })
         )}
       </div>
-      <div className="flex justify-end mt-2">
+      <div className="flex justify-end mt-2 md:mt-4 mb-4 mr-10 md:mr-0">
         <Button onClick={generateVideo} label="Create" />
       </div>
     </div>

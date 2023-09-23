@@ -60,10 +60,10 @@ const FileInput = (): JSX.Element => {
   }
 
   return (
-    <div className="p-2 bg-soft-gray shadow-lg w-7/12 h-fit flex-col rounded-lg">
-      <div className="w-full flex justify-center">
-        <div className="mt-8 flex items-center justify-center text-green-900" ref={drop}>
-          <label className="flex flex-col items-center border-[1px]  border-dotted border-green-900 bg-green-900/10 hover:bg-green-900/40  justify-center w-96 2xl:w-[680px] h-62 rounded-lg cursor-pointer transition duration-150">
+    <div className="p-2 bg-gradient-to-t from-soft-gray from-40% via-soft-gray via-55% to-green-900/30 to-90% shadow-lg w-10/12 h-fit flex-col rounded-lg">
+      <div className="flex justify-center">
+        <div className="mt-14 flex items-center justify-center text-green-900" ref={drop}>
+          <label className="flex flex-col items-center border-[1px]  border-dotted border-green-900 bg-green-900/10 hover:bg-green-900/40  justify-center w-[480px] lg:w-[620px] h-62 rounded-lg cursor-pointer transition duration-150">
             <div className="flex flex-col items-center justify-center pt-5 pb-6">
               <HiOutlineFolderArrowDown size={100} />
               <p className="mb-2 text-md ">
