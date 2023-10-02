@@ -4,4 +4,4 @@ An electron application that bundles whisper-ai in order to transcribe video fil
 using timestamps from transcribed video.
 
 <img src='images/image_1.png'>
-<img src='images/image_2.png>
+<img src='images/image_2.png'>
