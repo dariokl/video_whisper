@@ -1,7 +1,5 @@
 import { useRef, useState } from 'react'
 import ReactPlayer from 'react-player'
-import { formatTime } from '@renderer/utils/format-time.util'
-import { IoIosCheckbox, IoIosCheckboxOutline } from 'react-icons/io'
 import Button from '../base/Button'
 import Segment from './Segment'
 const VideoPlayer = ({ path, loading, segments }): JSX.Element => {
