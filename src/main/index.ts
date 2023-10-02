@@ -7,6 +7,8 @@ import { ipcHandlers } from './ipcHandlers'
 function createWindow(): void {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
+    minWidth: 640,
+    minHeight: 480,
     maxWidth: 1440,
     show: false,
     autoHideMenuBar: true,

@@ -33,7 +33,7 @@ const VideoPlayer = ({ path, loading, segments }): JSX.Element => {
   }
 
   return (
-    <div className="flex-col pt-8">
+    <div className="flex-col">
       <div className="rounded-lg flex justify-center">
         <ReactPlayer
           ref={ref}
@@ -47,7 +47,7 @@ const VideoPlayer = ({ path, loading, segments }): JSX.Element => {
         />
       </div>
 
-      <div className="mt-8 flex-col h-[420px] md:[620px] overflow-y-scroll p-6 lg:p-0">
+      <div className="mt-8 h-[240px] md:h-[400px] lg:h-[600px] w-[720px] overflow-y-scroll p-6 lg:p-0">
         {loading ? (
           <div> Loading... </div>
         ) : (
@@ -68,7 +68,7 @@ const VideoPlayer = ({ path, loading, segments }): JSX.Element => {
           })
         )}
       </div>
-      <div className="flex justify-end mt-2 md:mt-4 mb-4">
+      <div className="flex justify-end mt-2 md:mt-4 mb-4 mr-8 md:mr-8 lg:mr-2">
         <Button onClick={generateVideo} label="Create" />
       </div>
     </div>
