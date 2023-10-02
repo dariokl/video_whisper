@@ -4,14 +4,17 @@ import useIpc from '@renderer/hooks/useIpc'
 
 // TODO: Create smaller components for segements and player
 const Editor = (): JSX.Element => {
-  const { files } = useStepContext()
-  const { loading, error, response } = useIpc('loadFile', files[0].path)
+  const { file } = useStepContext()
+  if (!file) {
+    return <div> Error Loading file</div>
+  }
+  const { loading, error, response } = useIpc('loadFile', file.path)
 
   if (error) return <div>There was error processing your file</div>
 
   return (
     <div className="flex-col w-[680px] md:w-[920px]">
-      <VideoPlayer path={files[0].path} loading={loading} segments={response} />
+      <VideoPlayer path={file.path} loading={loading} segments={response} />
     </div>
   )
 }

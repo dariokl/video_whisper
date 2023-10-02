@@ -7,17 +7,17 @@ interface IProps {
 interface IContext {
   step: number
   setStep: React.Dispatch<React.SetStateAction<number>>
-  files: File[]
-  setFiles: React.Dispatch<React.SetStateAction<File[]>>
+  file: File | null
+  setFile: React.Dispatch<React.SetStateAction<File | null>>
 }
 const StepContext = createContext({} as IContext)
 
 const StepContextProvider: React.FC<IProps> = ({ children }): JSX.Element => {
   const [step, setStep] = useState<number>(0)
-  const [files, setFiles] = useState<File[]>([])
+  const [file, setFile] = useState<File | null>(null)
 
   return (
-    <StepContext.Provider value={{ step, setStep, files, setFiles }}>
+    <StepContext.Provider value={{ step, setStep, file, setFile }}>
       <div className="w-[920px] flex justify-center">{children}</div>
     </StepContext.Provider>
   )

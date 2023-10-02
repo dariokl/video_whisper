@@ -3,7 +3,7 @@ import ReactPlayer from 'react-player'
 import { formatTime } from '@renderer/utils/format-time.util'
 import { IoIosCheckbox, IoIosCheckboxOutline } from 'react-icons/io'
 import Button from '../base/Button'
-
+import Segment from './Segment'
 const VideoPlayer = ({ path, loading, segments }): JSX.Element => {
   const ref = useRef(null)
 
@@ -15,8 +15,8 @@ const VideoPlayer = ({ path, loading, segments }): JSX.Element => {
     }
   }
 
-  const isSelectedSegment = (selectedId: number): Record<string, number | string> | undefined =>
-    selectedSegments.find(({ id }) => id === selectedId)
+  const isSelectedSegment = (selectedId: number): boolean =>
+    !!selectedSegments.find(({ id }) => id === selectedId)
 
   const onAddSegment = (segment: Record<string, number | string>): void => {
     setSelectedSegments((prev) => [...prev, segment])
@@ -49,40 +49,28 @@ const VideoPlayer = ({ path, loading, segments }): JSX.Element => {
         />
       </div>
 
-      <div className="mt-8 flex-col h-[600px] overflow-y-scroll p-6 lg:p-0">
+      <div className="mt-8 flex-col h-[420px] md:[620px] overflow-y-scroll p-6 lg:p-0">
         {loading ? (
           <div> Loading... </div>
         ) : (
           segments.map(({ id, text, start, end }) => {
             return (
-              <div key={id} className="flex-col p-[4px]">
-                <div className="flex justify-center items-center shadow-md bg-green-900/10">
-                  <div
-                    onClick={(): void => handleSegmentClick(start)}
-                    className="w-fit h-10 flex justify-center items-center p-4 text-green-900 hover:text-blue-400 font-bold transition duration-150 hover:cursor-pointer"
-                  >
-                    <p>{formatTime(start)}</p>
-                  </div>
-                  <div className="flex-1 p-2 justify-center text-green-900/90">
-                    <div className="flex justify-between items-center">
-                      <p className="text-bold">{text}</p>
-                      {isSelectedSegment(id) ? (
-                        <IoIosCheckbox size={24} onClick={(): void => onRemoveSegment(id)} />
-                      ) : (
-                        <IoIosCheckboxOutline
-                          size={22}
-                          onClick={(): void => onAddSegment({ id, text, start, end })}
-                        />
-                      )}
-                    </div>
-                  </div>
-                </div>
-              </div>
+              <Segment
+                key={id}
+                id={id}
+                text={text}
+                start={start}
+                end={end}
+                isSelected={isSelectedSegment(id)}
+                onSegmentClick={handleSegmentClick}
+                onAddSegment={onAddSegment}
+                onRemoveSegment={onRemoveSegment}
+              />
             )
           })
         )}
       </div>
-      <div className="flex justify-end mt-2 md:mt-4 mb-4 mr-10 md:mr-0">
+      <div className="flex justify-end mt-2 md:mt-4 mb-4">
         <Button onClick={generateVideo} label="Create" />
       </div>
     </div>

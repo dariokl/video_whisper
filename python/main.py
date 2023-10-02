@@ -43,7 +43,7 @@ def create_video(file_path, segments=typer.Argument(..., callback=ast.literal_ev
         # Extract the subclip based on start and end times
         subclip = video.subclip(start_time, end_time)
 
-        text = TextClip(subtitle_text, font='Arial', fontsize=24, color='white')
+        text = TextClip(subtitle_text, font='Arial', fontsize=24, color='white', method='caption')
         text = text.set_pos('center').set_duration(end_time - start_time)
 
         compose = CompositeVideoClip([subclip, text])

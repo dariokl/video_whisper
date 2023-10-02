@@ -6,7 +6,7 @@ import { IoIosArrowForward } from 'react-icons/io'
 import Button from '../components/base/Button'
 
 const FileInput = (): JSX.Element => {
-  const { setStep, files, setFiles } = useStepContext()
+  const { setStep, file, setFile } = useStepContext()
 
   const drop = useRef<HTMLDivElement>(null)
 
@@ -26,8 +26,14 @@ const FileInput = (): JSX.Element => {
 
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>): void => {
     if (e.target.files) {
-      const file = e.target.files[0]
-      if (file) setFiles((prev) => [...prev, file])
+      const selectedFile = e.target.files[0]
+      if (selectedFile) {
+        if (selectedFile.size <= 100 * 1024 * 1024 && selectedFile.type === 'video/mp4') {
+          setFile(selectedFile)
+        } else {
+          // Show an error message for invalid files
+        }
+      }
     }
   }
 
@@ -42,19 +48,18 @@ const FileInput = (): JSX.Element => {
 
     const { files } = e.dataTransfer as DataTransfer
 
-    const validFiles = Array.from(files).filter(({ type }) => type === 'video/mp4')
-
-    if (validFiles.length > files.length) {
-      // show message
-    }
-
-    if (files && files.length) {
-      setFiles((prev) => [...prev, ...validFiles])
+    if (files && files.length === 1) {
+      const droppedFile = files[0]
+      if (droppedFile.size <= 100 * 1024 * 1024 && droppedFile.type === 'video/mp4') {
+        setFile(droppedFile)
+      } else {
+        // Show an error message for invalid files
+      }
     }
   }
 
   const handleContinue = (): void => {
-    if (files.length) {
+    if (file) {
       setStep(1)
     }
   }
@@ -76,15 +81,15 @@ const FileInput = (): JSX.Element => {
         </div>
       </div>
       <div className="flex-col p-8">
-        {files.map((file, index) => (
+        {file && (
           <div
-            className="flex gap-4 justify-center items-center text-xs text-green-900 hover:bg-green-900/10 rounded-lg"
-            key={`${file}_${index}`}
+            className="flex gap-4 p-4 justify-center items-center text-xs text-green-900 hover:bg-green-900/10 rounded-lg"
+            key={`${file}`}
           >
             <BsFiletypeMp4 size={40} />
             {file.name}
           </div>
-        ))}
+        )}
       </div>
       <div className="flex justify-end pr-4">
         <Button onClick={handleContinue} icon={<IoIosArrowForward />} />
