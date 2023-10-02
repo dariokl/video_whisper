@@ -7,7 +7,6 @@ const YoutubePlayer = ({ path }: { path: string }): JSX.Element => {
         width="100%"
         className="videoPlayer"
         src={`file-protocol://${path}`}
-        
       ></video>
     </div>
   )
