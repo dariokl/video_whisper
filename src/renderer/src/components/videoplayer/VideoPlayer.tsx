@@ -2,6 +2,7 @@ import { useRef, useState } from 'react'
 import ReactPlayer from 'react-player'
 import Button from '../base/Button'
 import Segment from './Segment'
+import VideoPlayerSkeleton from '../loading/VideoPlayerSkeleton'
 const VideoPlayer = ({ path, loading, segments }): JSX.Element => {
   const ref = useRef(null)
 
@@ -47,9 +48,9 @@ const VideoPlayer = ({ path, loading, segments }): JSX.Element => {
         />
       </div>
 
-      <div className="mt-8 h-[240px] md:h-[400px] lg:h-[600px] w-[720px] overflow-y-scroll p-6 lg:p-0">
+      <div className="mt-8 h-[240px] md:h-[400px] lg:h-[600px] max-w overflow-y-scroll p-6 lg:p-0">
         {loading ? (
-          <div> Loading... </div>
+          <VideoPlayerSkeleton />
         ) : (
           segments.map(({ id, text, start, end }) => {
             return (

@@ -14,10 +14,11 @@ body {
 }
 
 ::-webkit-scrollbar {
-  width: 10px;
+  width: 8px;
 }
       
 ::-webkit-scrollbar-track {
+  width: 8px;
   border-radius: 8px;
   background-color: transparent;
 
