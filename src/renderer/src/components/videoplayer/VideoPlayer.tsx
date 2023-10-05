@@ -2,11 +2,11 @@ import { useRef, useState } from 'react'
 import ReactPlayer from 'react-player'
 import Button from '../base/Button'
 import Segment from './Segment'
-import VideoPlayerSkeleton from '../loading/VideoPlayerSkeleton'
-const VideoPlayer = ({ path, loading, segments }): JSX.Element => {
-  const ref = useRef(null)
+import SearchAndView from './SearchAndView'
 
-  const [selectedSegments, setSelectedSegments] = useState<Record<any, any>[]>([])
+const VideoPlayer = ({ path, segments }): JSX.Element => {
+  const ref = useRef(null)
+  const [stateSegments, setStateSegments] = useState<Record<any, any>[]>(segments)
 
   const handleSegmentClick = (start: number): void => {
     if (ref.current) {
@@ -14,17 +14,28 @@ const VideoPlayer = ({ path, loading, segments }): JSX.Element => {
     }
   }
 
-  const isSelectedSegment = (selectedId: number): boolean =>
-    !!selectedSegments.find(({ id }) => id === selectedId)
-
   const onAddSegment = (segment: Record<string, number | string>): void => {
-    setSelectedSegments((prev) => [...prev, segment])
+    setStateSegments((prev) =>
+      prev.map(({ id, ...rest }) =>
+        id === segment.id ? { ...segment, checked: true } : { id, ...rest }
+      )
+    )
   }
 
-  const onRemoveSegment = (selectedId: number): void => {
-    const filteredSegments = selectedSegments.filter(({ id }) => id !== selectedId)
+  const onRemoveSegment = (segment: Record<string, number | string>): void => {
+    setStateSegments((prev) =>
+      prev.map(({ id, ...rest }) =>
+        id === segment.id ? { ...segment, checked: false } : { id, ...rest }
+      )
+    )
+  }
 
-    setSelectedSegments(filteredSegments)
+  const handleSearchChange = (term: string): void => {
+    if (!term) {
+      setStateSegments(segments)
+    }
+    const filteredSegments = segments.filter(({ text }) => text.includes(term))
+    setStateSegments(filteredSegments)
   }
 
   // Consider creating lazy UseIpc hook.
@@ -47,27 +58,23 @@ const VideoPlayer = ({ path, loading, segments }): JSX.Element => {
           autoPlay
         />
       </div>
-
-      <div className="mt-8 h-[240px] md:h-[400px] lg:h-[600px] max-w overflow-y-scroll p-6 lg:p-0">
-        {loading ? (
-          <VideoPlayerSkeleton />
-        ) : (
-          segments.map(({ id, text, start, end }) => {
-            return (
-              <Segment
-                key={id}
-                id={id}
-                text={text}
-                start={start}
-                end={end}
-                isSelected={isSelectedSegment(id)}
-                onSegmentClick={handleSegmentClick}
-                onAddSegment={onAddSegment}
-                onRemoveSegment={onRemoveSegment}
-              />
-            )
-          })
-        )}
+      <SearchAndView onSearchChange={handleSearchChange} />
+      <div className="h-[240px] md:h-[400px] lg:h-[600px] max-w overflow-y-scroll ">
+        {stateSegments.map(({ id, text, start, end, checked }) => {
+          return (
+            <Segment
+              key={id}
+              id={id}
+              text={text}
+              start={start}
+              end={end}
+              checked={checked}
+              onSegmentClick={handleSegmentClick}
+              onAddSegment={onAddSegment}
+              onRemoveSegment={onRemoveSegment}
+            />
+          )
+        })}
       </div>
       <div className="flex justify-end mt-2 md:mt-4 mb-4 mr-8 md:mr-8 lg:mr-2">
         <Button onClick={generateVideo} label="Create" />

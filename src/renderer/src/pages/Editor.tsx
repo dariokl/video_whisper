@@ -1,3 +1,4 @@
+import VideoPlayerSkeleton from '@renderer/components/loading/VideoPlayerSkeleton'
 import VideoPlayer from '@renderer/components/videoplayer/VideoPlayer'
 import { useStepContext } from '@renderer/contexts/stepContext'
 import useIpc from '@renderer/hooks/useIpc'
@@ -15,7 +16,7 @@ const Editor = (): JSX.Element => {
 
   return (
     <div className="flex-col">
-      <VideoPlayer path={file.path} loading={loading} segments={response} />
+      {loading ? <VideoPlayerSkeleton /> : <VideoPlayer path={file.path} segments={response} />}
     </div>
   )
 }

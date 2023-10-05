@@ -6,10 +6,10 @@ interface IProps {
   text: string
   start: number
   end: number
-  isSelected: boolean
+  checked: boolean
   onSegmentClick: (start: number) => void
   onAddSegment: (segment: Record<string, number | string>) => void
-  onRemoveSegment: (selectedId: number) => void
+  onRemoveSegment: (segment: Record<string, number | string>) => void
 }
 
 const Segment: React.FC<IProps> = ({
@@ -17,7 +17,7 @@ const Segment: React.FC<IProps> = ({
   text,
   start,
   end,
-  isSelected,
+  checked,
   onSegmentClick,
   onAddSegment,
   onRemoveSegment
@@ -35,8 +35,11 @@ const Segment: React.FC<IProps> = ({
           <div className="flex justify-between items-center">
             <p className="text-bold">{text}</p>
             <div>
-              {isSelected ? (
-                <IoIosCheckbox size={24} onClick={(): void => onRemoveSegment(id)} />
+              {checked ? (
+                <IoIosCheckbox
+                  size={24}
+                  onClick={(): void => onRemoveSegment({ id, text, start, end })}
+                />
               ) : (
                 <IoIosCheckboxOutline
                   size={24}
