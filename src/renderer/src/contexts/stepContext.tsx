@@ -17,9 +17,7 @@ const StepContextProvider: React.FC<IProps> = ({ children }): JSX.Element => {
   const [file, setFile] = useState<File | null>(null)
 
   return (
-    <StepContext.Provider value={{ step, setStep, file, setFile }}>
-      <div className="w-[920px] flex justify-center">{children}</div>
-    </StepContext.Provider>
+    <StepContext.Provider value={{ step, setStep, file, setFile }}>{children}</StepContext.Provider>
   )
 }
 

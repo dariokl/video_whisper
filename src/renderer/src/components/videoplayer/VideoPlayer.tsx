@@ -53,48 +53,56 @@ const VideoPlayer = ({ path, segments }): JSX.Element => {
   }
 
   return (
-    <div className="flex-col">
-      <div className="rounded-lg flex justify-center">
-        <ReactPlayer
-          ref={ref}
-          url={`file-protocol://${path}`}
-          controls
-          style={{
-            borderRadius: '20px',
-            overflow: 'hidden'
-          }}
-          autoPlay
-        />
-      </div>
+    <div className="flex-col w-[720px]">
+      <ReactPlayer
+        height="100%"
+        width="100%"
+        ref={ref}
+        url={`file-protocol://${path}`}
+        controls
+        style={{
+          borderRadius: '20px',
+          overflow: 'hidden'
+        }}
+        autoPlay
+      />
+
       <SearchAndView onSearchChange={handleSearchChange} onViewChange={handleViewChange} />
       {view === 'list' ? (
-        <div className="max-h-[240px] md:max-h-[400px] lg:max-h-[600px] max-w overflow-y-scroll h-fit">
-          {stateSegments.map(({ id, text, start, end, checked }) => {
-            return (
-              <Segment
-                key={id}
-                id={id}
-                text={text}
-                start={start}
-                end={end}
-                checked={checked}
-                onSegmentClick={handleSegmentClick}
-                onAddSegment={onAddSegment}
-                onRemoveSegment={onRemoveSegment}
-              />
-            )
-          })}
-        </div>
+        <>
+          <div className="h-fit max-h-[620px] overflow-y-scroll">
+            {stateSegments.map(({ id, text, start, end, checked }) => {
+              return (
+                <Segment
+                  key={id}
+                  id={id}
+                  text={text}
+                  start={start}
+                  end={end}
+                  checked={checked}
+                  onSegmentClick={handleSegmentClick}
+                  onAddSegment={onAddSegment}
+                  onRemoveSegment={onRemoveSegment}
+                />
+              )
+            })}
+          </div>
+          <div className="flex justify-end mt-2 md:mt-4 mb-4 md:mr-2 lg:mr-2">
+            <Button onClick={generateVideo} label="Create" />
+          </div>
+        </>
       ) : (
-        <div className="text-center rounded-lg max-h-[240px] md:max-h-[400px] lg:max-h-[600px] overflow-y-scroll h-fit w-[640px]">
-          <p className="bg-green-900/10 shadow-lg p-4 break-words">
-            {stateSegments.map(({ text }) => text).join('')}
-          </p>
-        </div>
+        <>
+          <div className="text-center rounded-lg overflow-y-scroll h-fit max-h-[620px] overflow-y-scroll">
+            <p className="bg-green-900/10 shadow-lg p-4 break-words">
+              {stateSegments.map(({ text }) => text).join('')}
+            </p>
+          </div>
+          <div className="flex justify-end mt-2 md:mt-4 mb-4 md:mr-2 lg:mr-2">
+            <Button onClick={generateVideo} label="Create" />
+          </div>
+        </>
       )}
-      <div className="flex justify-end mt-2 md:mt-4 mb-4 md:mr-2 lg:mr-2">
-        <Button onClick={generateVideo} label="Create" />
-      </div>
     </div>
   )
 }

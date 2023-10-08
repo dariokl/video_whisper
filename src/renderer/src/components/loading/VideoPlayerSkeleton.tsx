@@ -1,6 +1,6 @@
 const VideoPlayerSkeleton = (): JSX.Element => {
   return (
-    <div className="flex-col p-[4px] divide-y-4 divide-white w-[640px]">
+    <div className="flex-col p-[4px] divide-y-4 divide-white w-[720px]">
       <div className="bg-green-900/10 mb-4 h-64 rounded-lg"></div>
 
       <div className="flex justify-between items-center bg-green-900/10 mb-4 h-12 mt-4 mb-4 rounded-lg p-4">

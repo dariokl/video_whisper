@@ -1,9 +1,6 @@
 
 body {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  height: 100vh;
   font-family: Roboto, -apple-system, BlinkMacSystemFont, 'Helvetica Neue', 'Segoe UI', 'Oxygen',
   'Ubuntu', 'Cantarell', 'Open Sans', sans-serif;
 }

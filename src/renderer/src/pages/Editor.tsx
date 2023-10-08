@@ -15,7 +15,7 @@ const Editor = (): JSX.Element => {
   if (error) return <div>There was error processing your file</div>
 
   return (
-    <div className="flex-col">
+    <div className="">
       {loading ? <VideoPlayerSkeleton /> : <VideoPlayer path={file.path} segments={response} />}
     </div>
   )
