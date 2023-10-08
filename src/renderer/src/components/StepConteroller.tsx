@@ -2,6 +2,7 @@ import { useStepContext } from '@renderer/contexts/stepContext'
 import Editor from '../pages/Editor'
 import FileInput from '../pages/FileInput'
 
+// TODO: Use hash router
 const StepConteroller = (): JSX.Element | null => {
   const { step } = useStepContext()
 

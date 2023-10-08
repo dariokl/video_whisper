@@ -1,8 +1,15 @@
 import { useEffect, useState } from 'react'
 
+export interface ISegment {
+  id: number
+  start: number
+  end: number
+  text: string
+}
+
 export const useIpc = (functionName, args): Record<string, boolean | any | Error> => {
   const [loading, setLoading] = useState<boolean>(true)
-  const [response, setResponse] = useState<Record<any, any>>({})
+  const [response, setResponse] = useState<ISegment[]>([])
   const [error, setError] = useState<Error | null>(null)
 
   useEffect(() => {

@@ -1,14 +1,15 @@
 import React from 'react'
 import { IoIosList } from 'react-icons/io'
 import { RiFilePaper2Line } from 'react-icons/ri'
-import Input from '../base/Input'
-import Button from '../base/Button'
+import Input from '../../base/Input'
+import Button from '../../base/Button'
 
 interface IProps {
   onSearchChange: (term: string) => void
+  onViewChange: (view: string) => void
 }
 
-const SearchAndView: React.FC<IProps> = ({ onSearchChange }): JSX.Element => {
+const SearchAndView: React.FC<IProps> = ({ onSearchChange, onViewChange }): JSX.Element => {
   return (
     <div className="flex justify-between items-center mt-4 mb-4 h-12 max-w">
       <div className="flex w-[240px] flex-wrap items-center">
@@ -19,10 +20,10 @@ const SearchAndView: React.FC<IProps> = ({ onSearchChange }): JSX.Element => {
         />
       </div>
       <div className="flex gap-2">
-        <Button icon={<IoIosList size={22} />} onClick={(): void => console.log('click')} small />
+        <Button icon={<IoIosList size={22} />} onClick={(): void => onViewChange('list')} small />
         <Button
           icon={<RiFilePaper2Line size={22} />}
-          onClick={(): void => console.log('click')}
+          onClick={(): void => onViewChange('page')}
           small
         ></Button>
       </div>

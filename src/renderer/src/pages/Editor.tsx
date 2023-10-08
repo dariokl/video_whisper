@@ -8,7 +8,7 @@ const Editor = (): JSX.Element => {
   const { file } = useStepContext()
   // TODO: Handle this properly.
   if (!file) {
-    return <div> Error Loading file</div>
+    return <div> File not loaded</div>
   }
   const { loading, error, response } = useIpc('loadFile', file.path)
 

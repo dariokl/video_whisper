@@ -1,12 +1,20 @@
 import { useRef, useState } from 'react'
 import ReactPlayer from 'react-player'
 import Button from '../base/Button'
-import Segment from './Segment'
-import SearchAndView from './SearchAndView'
+import Segment from './components/Segment'
+import SearchAndView from './components/SearchAndView'
+
+/**
+ * Look for different folders structure as component grows
+ * Consider using context to move segments state logic from video-player component.
+ */
 
 const VideoPlayer = ({ path, segments }): JSX.Element => {
   const ref = useRef(null)
   const [stateSegments, setStateSegments] = useState<Record<any, any>[]>(segments)
+  const [view, setView] = useState<string>('list')
+
+  const handleViewChange = (view: string): void => setView(view)
 
   const handleSegmentClick = (start: number): void => {
     if (ref.current) {
@@ -58,25 +66,33 @@ const VideoPlayer = ({ path, segments }): JSX.Element => {
           autoPlay
         />
       </div>
-      <SearchAndView onSearchChange={handleSearchChange} />
-      <div className="h-[240px] md:h-[400px] lg:h-[600px] max-w overflow-y-scroll ">
-        {stateSegments.map(({ id, text, start, end, checked }) => {
-          return (
-            <Segment
-              key={id}
-              id={id}
-              text={text}
-              start={start}
-              end={end}
-              checked={checked}
-              onSegmentClick={handleSegmentClick}
-              onAddSegment={onAddSegment}
-              onRemoveSegment={onRemoveSegment}
-            />
-          )
-        })}
-      </div>
-      <div className="flex justify-end mt-2 md:mt-4 mb-4 mr-8 md:mr-8 lg:mr-2">
+      <SearchAndView onSearchChange={handleSearchChange} onViewChange={handleViewChange} />
+      {view === 'list' ? (
+        <div className="max-h-[240px] md:max-h-[400px] lg:max-h-[600px] max-w overflow-y-scroll h-fit">
+          {stateSegments.map(({ id, text, start, end, checked }) => {
+            return (
+              <Segment
+                key={id}
+                id={id}
+                text={text}
+                start={start}
+                end={end}
+                checked={checked}
+                onSegmentClick={handleSegmentClick}
+                onAddSegment={onAddSegment}
+                onRemoveSegment={onRemoveSegment}
+              />
+            )
+          })}
+        </div>
+      ) : (
+        <div className="text-center rounded-lg max-h-[240px] md:max-h-[400px] lg:max-h-[600px] overflow-y-scroll h-fit w-[640px]">
+          <p className="bg-green-900/10 shadow-lg p-4 break-words">
+            {stateSegments.map(({ text }) => text).join('')}
+          </p>
+        </div>
+      )}
+      <div className="flex justify-end mt-2 md:mt-4 mb-4 md:mr-2 lg:mr-2">
         <Button onClick={generateVideo} label="Create" />
       </div>
     </div>
