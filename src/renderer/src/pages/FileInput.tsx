@@ -1,13 +1,19 @@
 import { useStepContext } from '@renderer/contexts/stepContext'
 import { ChangeEvent, useEffect, useRef } from 'react'
-import { BsFiletypeMp4 } from 'react-icons/bs'
+import { BsFiletypeMov, BsFiletypeMp4 } from 'react-icons/bs'
 import { HiOutlineFolderArrowDown } from 'react-icons/hi2'
 import { IoIosArrowForward } from 'react-icons/io'
 import Button from '../components/base/Button'
+import Select from '../components/base/Select'
+import { useState } from 'react'
+
+// TODO: Consider some config.ts file for such things.
+const models = ['Tiny', 'Base', 'Small', 'Medium', 'Large']
+const icons = { 'video/mp4': <BsFiletypeMp4 size={42} />, 'video/mov': <BsFiletypeMov size={42} /> }
 
 const FileInput = (): JSX.Element => {
   const { setStep, file, setFile } = useStepContext()
-
+  const [error, setError] = useState<string | null>(null)
   const drop = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -30,8 +36,10 @@ const FileInput = (): JSX.Element => {
       if (selectedFile) {
         if (selectedFile.size <= 100 * 1024 * 1024 && selectedFile.type === 'video/mp4') {
           setFile(selectedFile)
+          setError(null)
         } else {
-          // Show an error message for invalid files
+          setError('The chosen file exceeds the maximum allowable size of 100MB.')
+          setFile(null)
         }
       }
     }
@@ -52,14 +60,16 @@ const FileInput = (): JSX.Element => {
       const droppedFile = files[0]
       if (droppedFile.size <= 100 * 1024 * 1024 && droppedFile.type === 'video/mp4') {
         setFile(droppedFile)
+        setError(null)
       } else {
-        // Show an error message for invalid files
+        setError('The chosen file exceeds the maximum allowable size of 100MB.')
+        setFile(null)
       }
     }
   }
 
   const handleContinue = (): void => {
-    if (file) {
+    if (file && !error) {
       setStep(1)
     }
   }
@@ -86,9 +96,27 @@ const FileInput = (): JSX.Element => {
             className="flex gap-4 p-4 justify-center items-center text-xs text-green-900 hover:bg-green-900/10 rounded-lg"
             key={`${file}`}
           >
-            <BsFiletypeMp4 size={40} />
+            {icons[file.type]}
             {file.name}
+            <div className="w-1/2 flex justify-end">
+              <Select
+                options={models.map((model) => ({ name: model, value: model }))}
+                label={'Select model'}
+              />
+            </div>
           </div>
+        )}
+      </div>
+      <div className="p-8 flex justify-center">
+        {error ? (
+          <span className="text-sm font-bold text-red-700/80">{error}</span>
+        ) : (
+          <p className="text-xs font-bold text-green-900">
+            When selecting an AI model for video transcription, please consider that your choice may
+            affect the processing time. Smaller models are faster at transcription, while larger
+            models offer a higher level of accuracy. However, they come at the cost of longer
+            processing times and increased resource usage.
+          </p>
         )}
       </div>
       <div className="flex justify-end pr-4">
