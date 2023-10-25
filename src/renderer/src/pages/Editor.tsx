@@ -5,12 +5,12 @@ import useIpc from '@renderer/hooks/useIpc'
 
 // TODO: Create smaller components for segements and player
 const Editor = (): JSX.Element => {
-  const { file } = useStepContext()
+  const { file, model } = useStepContext()
   // TODO: Handle this properly.
   if (!file) {
     return <div> File not loaded</div>
   }
-  const { loading, error, response } = useIpc('loadFile', file.path)
+  const { loading, error, response } = useIpc('loadFile', { path: file.path, model })
 
   if (error) return <div>There was error processing your file</div>
 

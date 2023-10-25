@@ -9,10 +9,13 @@ import { useState } from 'react'
 
 // TODO: Consider some config.ts file for such things.
 const models = ['Tiny', 'Base', 'Small', 'Medium', 'Large']
-const icons = { 'video/mp4': <BsFiletypeMp4 size={42} />, 'video/mov': <BsFiletypeMov size={42} /> }
+const iconsFileType = {
+  'video/mp4': <BsFiletypeMp4 size={42} />,
+  'video/mov': <BsFiletypeMov size={42} />
+}
 
 const FileInput = (): JSX.Element => {
-  const { setStep, file, setFile } = useStepContext()
+  const { setStep, file, setFile, setModel } = useStepContext()
   const [error, setError] = useState<string | null>(null)
   const drop = useRef<HTMLDivElement>(null)
 
@@ -33,8 +36,16 @@ const FileInput = (): JSX.Element => {
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>): void => {
     if (e.target.files) {
       const selectedFile = e.target.files[0]
+
+      // TODO: Create type for files instead of icons obj.
+      if (!Object.keys(iconsFileType).includes(selectedFile.type)) {
+        setFile(null)
+        setError('The chosen file format is not supported.')
+        return
+      }
+
       if (selectedFile) {
-        if (selectedFile.size <= 100 * 1024 * 1024 && selectedFile.type === 'video/mp4') {
+        if (selectedFile.size <= 100 * 1024 * 1024) {
           setFile(selectedFile)
           setError(null)
         } else {
@@ -58,7 +69,14 @@ const FileInput = (): JSX.Element => {
 
     if (files && files.length === 1) {
       const droppedFile = files[0]
-      if (droppedFile.size <= 100 * 1024 * 1024 && droppedFile.type === 'video/mp4') {
+
+      if (!Object.keys(iconsFileType).includes(droppedFile.type)) {
+        setFile(null)
+        setError('The chosen file format is not supported.')
+        return
+      }
+
+      if (droppedFile.size <= 100 * 1024 * 1024) {
         setFile(droppedFile)
         setError(null)
       } else {
@@ -96,11 +114,12 @@ const FileInput = (): JSX.Element => {
             className="flex gap-4 p-4 justify-center items-center text-xs text-green-900 hover:bg-green-900/10 rounded-lg"
             key={`${file}`}
           >
-            {icons[file.type]}
+            {iconsFileType[file.type]}
             {file.name}
             <div className="w-1/2 flex justify-end">
               <Select
                 options={models.map((model) => ({ name: model, value: model }))}
+                onChange={(model: string): void => setModel(model.toLowerCase())}
                 label={'Select model'}
               />
             </div>

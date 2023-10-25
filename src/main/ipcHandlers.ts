@@ -10,7 +10,7 @@ export const ipcHandlers = (): void => {
     // process.cwd()
     const exePath = path.join(__dirname, '../../python/dist/main/main.exe')
 
-    const { stdout } = await exec(exePath, ['transcribe-audio', args])
+    const { stdout } = await exec(exePath, ['transcribe-audio', args.path, args.model])
 
     return JSON.parse(stdout)
   })

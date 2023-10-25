@@ -3,6 +3,8 @@ import ReactPlayer from 'react-player'
 import Button from '../base/Button'
 import Segment from './components/Segment'
 import SearchAndView from './components/SearchAndView'
+import { useStepContext } from '@renderer/contexts/stepContext'
+import { IoIosArrowBack } from 'react-icons/io'
 
 /**
  * Look for different folders structure as component grows
@@ -11,6 +13,7 @@ import SearchAndView from './components/SearchAndView'
 
 const VideoPlayer = ({ path, segments }): JSX.Element => {
   const ref = useRef(null)
+  const { setStep } = useStepContext()
   const [stateSegments, setStateSegments] = useState<Record<any, any>[]>(segments)
   const [view, setView] = useState<string>('list')
 
@@ -87,7 +90,8 @@ const VideoPlayer = ({ path, segments }): JSX.Element => {
               )
             })}
           </div>
-          <div className="flex justify-end mt-2 md:mt-4 mb-4 md:mr-2 lg:mr-2">
+          <div className="flex justify-between mt-2 md:mt-4 mb-4 md:mr-2 lg:mr-2">
+            <Button onClick={(): void => setStep(0)} icon={<IoIosArrowBack />} />
             <Button onClick={generateVideo} label="Create" />
           </div>
         </>
@@ -98,7 +102,8 @@ const VideoPlayer = ({ path, segments }): JSX.Element => {
               {stateSegments.map(({ text }) => text).join('')}
             </p>
           </div>
-          <div className="flex justify-end mt-2 md:mt-4 mb-4 md:mr-2 lg:mr-2">
+          <div className="flex justify-between mt-2 md:mt-4 mb-4 md:mr-2 lg:mr-2">
+            <Button onClick={(): void => setStep(0)} icon={<IoIosArrowBack />} />
             <Button onClick={generateVideo} label="Create" />
           </div>
         </>

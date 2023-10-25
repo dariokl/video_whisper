@@ -15,9 +15,9 @@ OUTPUT_VIDEO_FILENAME = "output_video_with_subtitles.mp4"
 
 
 @app.command()
-def transcribe_audio(file_path):
+def transcribe_audio(file_path, model):
     # TODO: Check cuda packaging options.
-    model = WhisperModel('tiny', device='cpu', compute_type='float32')
+    model = WhisperModel(model, device='cpu', compute_type='float32')
     segments, info = model.transcribe(file_path, beam_size=5)
 
     result = []
