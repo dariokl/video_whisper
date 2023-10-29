@@ -5,6 +5,7 @@ import Segment from './components/Segment'
 import SearchAndView from './components/SearchAndView'
 import { useStepContext } from '@renderer/contexts/stepContext'
 import { IoIosArrowBack } from 'react-icons/io'
+import TextView from './components/TextView'
 
 /**
  * Look for different folders structure as component grows
@@ -15,6 +16,7 @@ const VideoPlayer = ({ path, segments }): JSX.Element => {
   const ref = useRef(null)
   const { setStep } = useStepContext()
   const [stateSegments, setStateSegments] = useState<Record<any, any>[]>(segments)
+  const [term, setTerm] = useState<string>('')
   const [view, setView] = useState<string>('list')
 
   const handleViewChange = (view: string): void => setView(view)
@@ -45,7 +47,10 @@ const VideoPlayer = ({ path, segments }): JSX.Element => {
     if (!term) {
       setStateSegments(segments)
     }
-    const filteredSegments = segments.filter(({ text }) => text.includes(term))
+    setTerm(term)
+    const filteredSegments = segments.filter(({ text }) =>
+      text.toLowerCase().includes(term.toLowerCase())
+    )
     setStateSegments(filteredSegments)
   }
 
@@ -92,21 +97,11 @@ const VideoPlayer = ({ path, segments }): JSX.Element => {
           </div>
           <div className="flex justify-between mt-2 md:mt-4 mb-4 md:mr-2 lg:mr-2">
             <Button onClick={(): void => setStep(0)} icon={<IoIosArrowBack />} />
-            <Button onClick={generateVideo} label="Create" />
+            <Button onClick={generateVideo} label="Export" />
           </div>
         </>
       ) : (
-        <>
-          <div className="text-center rounded-lg overflow-y-scroll h-fit max-h-[620px] overflow-y-scroll">
-            <p className="bg-green-900/10 shadow-lg p-4 break-words">
-              {stateSegments.map(({ text }) => text).join('')}
-            </p>
-          </div>
-          <div className="flex justify-between mt-2 md:mt-4 mb-4 md:mr-2 lg:mr-2">
-            <Button onClick={(): void => setStep(0)} icon={<IoIosArrowBack />} />
-            <Button onClick={generateVideo} label="Create" />
-          </div>
-        </>
+        <TextView generateVideo={generateVideo} segments={segments} searchTerm={term} />
       )}
     </div>
   )
