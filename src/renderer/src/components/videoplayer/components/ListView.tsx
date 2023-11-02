@@ -1,6 +1,6 @@
 import React from 'react'
 
-const ListView = () => {
+const ListView = (): JSX.Element => {
   return <div>ListView</div>
 }
 

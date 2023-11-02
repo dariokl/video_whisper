@@ -76,6 +76,7 @@ const VideoPlayer = ({ path, segments }): JSX.Element => {
       />
 
       <SearchAndView onSearchChange={handleSearchChange} onViewChange={handleViewChange} />
+      {/*Move this view to separate component keep it here for now to avoid props drilling.*/}
       {view === 'list' ? (
         <>
           <div className="h-fit max-h-[620px] overflow-y-scroll">
